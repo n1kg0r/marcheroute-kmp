@@ -76,4 +76,38 @@ class OverpassClient {
 
         return emptyList()
     }
+
+
+    suspend fun queryCityContour(city: String): CityContour? {
+        val query = """
+        [out:json][timeout:25];
+        relation
+          ["boundary"="administrative"]
+          ["admin_level"="8"]
+          ["name"="$city"];
+        out geom;
+    """.trimIndent()
+
+        val response = HttpClientProvider.client.post(
+            "https://overpass-api.de/api/interpreter"
+        ) {
+            setBody(query)
+            header(HttpHeaders.UserAgent, "marcheroute-kmp/0.1")
+            accept(ContentType.Application.Json)
+        }
+
+        val body = response.body<OverpassResponse>()
+
+        val relation = body.elements.firstOrNull { it.members != null }
+            ?: return null
+
+        val points = relation.members
+            ?.flatMap { it.geometry.orEmpty() }
+            ?.map { GeoPoint(it.lat, it.lon) }
+            .orEmpty()
+
+        return CityContour(points)
+    }
+
+
 }

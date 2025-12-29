@@ -34,14 +34,47 @@ data class OverpassResponse(
     val elements: List<OverpassElement>
 )
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class OverpassElement(
     val id: Long,
+    val type: String? = null,
     val lat: Double? = null,
     val lon: Double? = null,
     val center: Center? = null,
-    val tags: Map<String, String>? = null
+    val tags: Map<String, String>? = null,
+    val members: List<OverpassMember>? = null
 )
 
 @kotlinx.serialization.Serializable
 data class Center(val lat: Double, val lon: Double)
+
+
+
+@Serializable
+data class CityContour(
+    val points: List<GeoPoint>
+)
+
+@Serializable
+data class GeoPoint(
+    val lat: Double,
+    val lon: Double
+)
+
+@Serializable
+data class OverpassRelation(
+    val id: Long,
+    val members: List<OverpassMember>
+)
+
+@Serializable
+data class OverpassMember(
+    val role: String,
+    val geometry: List<OverpassGeometry>? = null
+)
+
+@Serializable
+data class OverpassGeometry(
+    val lat: Double,
+    val lon: Double
+)
