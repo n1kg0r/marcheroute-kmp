@@ -42,6 +42,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+
+            implementation(compose.materialIconsExtended)
             // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -59,6 +61,12 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.json)
             implementation(libs.kotlinx.serialization.json)
+            implementation("io.ktor:ktor-client-core")
+            implementation("io.ktor:ktor-client-logging:3.3.3") // or "io.ktor:ktor-client-logging:VERSION"
+            implementation("ovh.plrapps:mapcompose-mp:0.11.0")
+            implementation("com.squareup.okio:okio:3.7.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.6.0")
+
         }
 
         androidMain.dependencies {
@@ -71,6 +79,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.cio)
+            implementation("ch.qos.logback:logback-classic:1.5.12")
         }
 
         iosMain.dependencies {
